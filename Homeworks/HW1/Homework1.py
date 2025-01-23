@@ -12,14 +12,14 @@ plt.plot(x,p1)
 plt.xlabel("X Points Given")
 plt.ylabel("P Points")
 plt.title("p(x) Plotted in Coefficient Form")
-plt.show()
+#plt.show()
 
 p2 = (x-2)**9
 plt.plot(x,p1)
 plt.xlabel("X Points Given")
 plt.ylabel("P Points")
 plt.title("p(x) Plotted in Original Binomial Form")
-plt.show()
+#plt.show()
 
 # PROBLEM 2
 x = np.linspace(1.99999999,2.00000001,1000000)
@@ -29,4 +29,17 @@ z1_bad = np.sin(x) - np.sin(y)
 z1_good = 2 * np.cos((x+y)/2) * np.sin((x-y)/2)
 plt.plot(diff,z1_bad)
 plt.plot(diff,z1_good)
-plt.show()
+#plt.show()
+
+# PROBLEM 4
+# Using python  to find roots to a precision higher than 3 decimal places
+# x^2-56x+1=0
+a = 1
+b = -56
+c = 1
+
+r1 = (-b + np.sqrt(b**2 - 4*a*c)) / (2 * a)
+r2 = (-b - np.sqrt(b**2 - 4*a*c)) / (2 * a)
+
+print("r1 is ", r1)
+print("r2 is ", r2)
