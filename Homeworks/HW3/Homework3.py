@@ -104,7 +104,59 @@ def Problem2():
 
    print("The answer from the bisection method for part a: ", astar_a)
    print("The answer from the bisection method for part b: ", astar_b)
-   
+
+#Problem 3
+def Problem3():
+   a = 1
+   b = 4
+   tol = 0.5e-3
+   f_x = lambda x: x**3 + x - 4
+   [astar, ier_a, num] = bisection(f_x,a,b,tol)
+
+   print("The root of this equation is: ", astar)
+   print("The number of iterations used was: ", num)
+
+#Problem 5
+def Problem5():
+   #Part a)
+   x = np.linspace(-2.5,7.5,100)
+   f_x = x - 4*np.sin(2*x) - 3
+   x_line = np.zeros(100)
+
+   plt.figure
+   plt.plot(x,f_x)
+   plt.plot(x,x_line)
+   plt.grid(True)
+   plt.title("Figure Showing the Zeros of f(x)")
+   plt.xlabel("X Values")
+   plt.ylabel("f(x) Values")
+   plt.ylim([-4,4])
+   plt.show()
+
+   #Part b)
+   g_x = lambda x: -np.sin(2*x) + (5*x)/4 - (3/4)
+   x0_i = -0.9
+   x0_ii = -0.5
+   x0_iii = 1.7
+   x0_iv = 3.2
+   x0_v = 4.5
+   x0_vi = 5
+
+   tol = 0.5e-10
+   Nmax = 50
+
+   [xstar_i,_] = fixedpt(g_x,x0_i,tol,Nmax)
+   print(xstar_i)
+   [xstar_ii,_] = fixedpt(g_x,x0_ii,tol,Nmax)
+   print(xstar_ii)
+   [xstar_iii,_] = fixedpt(g_x,x0_iii,tol,Nmax)
+   print(xstar_iii)
+   [xstar_iv,_] = fixedpt(g_x,x0_iv,tol,Nmax)
+   print(xstar_iv)
+   [xstar_v,_] = fixedpt(g_x,x0_v,tol,Nmax)
+   print(xstar_v)
+   [xstar_vi,_] = fixedpt(g_x,x0_vi,tol,Nmax)
+   print(xstar_vi)
 
 #---------------------------------------#
 #Calling Homework Problem
@@ -114,5 +166,11 @@ Problem1()
 
 #Problem 2
 Problem2()
+
+#Problem 3
+Problem3()
+
+#Problem 5
+Problem5()
 
  
