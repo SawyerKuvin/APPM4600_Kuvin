@@ -97,8 +97,8 @@ def BiNewton(f,df,a,b,tolBi,tolNew,Nmax):
 #-----------Main Script-------------#
 
 #3.6 Part c)
-f = lambda x: np.exp(x**2+7*x-30) - 1
-df = lambda x: (2*x+7) * np.exp(x**2+7*x-30)
+f = lambda x: np.exp(x**2+7*x-30) - 1 #Given function
+df = lambda x: (2*x+7) * np.exp(x**2+7*x-30) #Hand Calculated
 Nmax = 50
 tolBi = 1
 tolNew = 1e-10
