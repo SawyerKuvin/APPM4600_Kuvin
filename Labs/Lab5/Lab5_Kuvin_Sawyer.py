@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 verb = 0;
 
 def BiNewton(f,df,a,b,tolBi,tolNew,Nmax):
+    #INITIALLY GOING THROUGH BISECTION METHOD
     fa = f(a)
     fb = f(b)
     count = 0
@@ -50,6 +51,7 @@ def BiNewton(f,df,a,b,tolBi,tolNew,Nmax):
 #newton method to find root of f starting at guess x0
 #Initialize iterates and iterate list
 
+#ENTERING NEWTON METHOD ITERATION
 ##Beginning Newton Method
     xn=d;
     r=d;
@@ -104,3 +106,5 @@ a = 2
 b = 4.5
 [r,rn,numb] = BiNewton(f,df,a,b,tolBi,tolNew,Nmax)
 print(r,numb)
+
+#Note: CODE FAILED HERE, was not able to reach concrete results
