@@ -192,6 +192,88 @@ def newton_method(f,df,x0,tol,nmax,verb=False):
     return (r,rn,nfun)
 
 
+#-------Made Functions for Problem-------#
+#Multiplicity Newton Method
+def m_newton_method(f,df,m,x0,tol,nmax,verb=False):
+    #newton method to find root of f starting at guess x0
+
+    #Initialize iterates and iterate list
+    xn=x0;
+    rn=np.array([x0]);
+    # function evaluations
+    fn=f(xn); dfn=df(xn);
+    nfun=2; #evaluation counter nfun
+    dtol=1e-10; #tolerance for derivative (being near 0)
+
+    if abs(dfn)<dtol:
+        #If derivative is too small, Newton will fail. Error message is
+        #displayed and code terminates.
+        #print('\n derivative at initial guess is near 0, try different x0 \n');
+        r = "Broken due to derivative near 0"
+        nfun = "None"
+    else:
+        n=0;
+        if verb:
+            print("\n|--n--|----xn----|---|f(xn)|---|---|f'(xn)|---|");
+
+        #Iteration runs until f(xn) is small enough or nmax iterations are computed.
+
+        while n<=nmax:
+            if verb:
+                print("|--%d--|%1.8f|%1.8f|%1.8f|" %(n,xn,np.abs(fn),np.abs(dfn)));
+
+            pn = - m * (fn/dfn); #Newton step
+            if np.abs(pn)<tol or np.abs(fn)<2e-15:
+                break;
+
+            #Update guess adding Newton step
+            xn = xn + pn;
+
+            # Update info and loop
+            n+=1;
+            rn=np.append(rn,xn);
+            dfn=df(xn);
+            fn=f(xn);
+            nfun+=2;
+
+        r=xn;
+
+        if n>=nmax:
+            print("Newton method failed to converge, niter=%d, nfun=%d, f(r)=%1.1e\n'" %(n,nfun,np.abs(fn)));
+        else:
+            print("Newton method converged succesfully, niter=%d, nfun=%d, f(r)=%1.1e" %(n,nfun,np.abs(fn)));
+
+    return (r,rn,nfun)
+
+def g_x(f,df):
+    
+    def result(x):
+        g = f(x)/df(x)
+        return(g)
+    return result
+
+def dg_x(f,df,d2f):
+    
+    def result(x):
+        dg = 1 - (f(x) * d2f(x))/(df(x)**2)
+        return(dg)
+    return result
+
+def log_vectorizer(rn_Vec,root):
+    xVec = []
+    yVec = []
+    for k in range(len(rn_Vec)-1):
+        if k == 1:
+            xVec = abs(rn_Vec[k] - root)
+            yVec = abs(rn_Vec[k+1] - root)
+        else:
+            xVec = np.append(xVec,abs(rn_Vec[k] - root))
+            yVec = np.append(yVec,abs(rn_Vec[k+1] - root))
+    #print(xVec)
+    #print(yVec)
+    p = (np.log(yVec[-2]) - np.log(yVec[1])) / (np.log(xVec[-2]) - np.log(xVec[1]))
+    return [xVec,yVec,p]
+
 #-------Written Problems-------#
 def Problem1():
     Ti = 20
@@ -230,6 +312,51 @@ def Problem1():
     print("The depth approximated by Newton (x0 = 0.01) was: ", NDepthOG)
     [NDepthBar,_,_] = newton_method(T,dT,xbar,tol,nmax)
     print("The depth approximated by Newton (x0 = x_bar) was: ", NDepthBar)
+
+def Problem4():
+    f = lambda x: np.exp(3*x) - 27*(x**6) + 27*(x**4)*np.exp(x)-9*(x**2)*np.exp(2*x)
+    df = lambda x: 3*np.exp(3*x)+(-18*(x**2)-18*x)*np.exp(2*x)+(27*(x**4)+108*(x**3))*np.exp(x) - 162*(x**5)
+    d2f = lambda x: 9*np.exp(3*x)+(-36*(x**2)-72*x-18)*np.exp(2*x) + (27*(x**4)+216*(x**3)+324*(x**2))*np.exp(x) - 810*(x**4)
+    x0 = 3.7
+    tol = 1e-8
+    tolBIG = 1e-12
+    nmax = 50
+    nmaxBIG = 200
+    g = g_x(f,df)
+    dg = dg_x(f,df,d2f)
+
+    [root,_,_] = newton_method(f,df,x0,tolBIG,nmaxBIG)
+
+    #Plot to find multiplicities
+    x = np.linspace(3.5,3.9,100)
+    f_plt = f(x)
+    plt.figure()
+    plt.plot(x,f_plt)
+    plt.grid(True)
+    plt.xlabel("X values near Roopythot")
+    plt.ylabel("Function Values")
+    plt.title("4 - Plot to Determine Multiplicity")
+    plt.show()
+
+    m = 3 #Guess
+
+    [rNewton,rnNewton,nNewton] = newton_method(f,df,x0,tol,nmax)
+    [r2c,rn2c,n2c] = newton_method(g,dg,x0,tol,nmax)
+    [rNewtonM,rnNewtonM,nNewtonM] = m_newton_method(f,df,m,x0,tol,nmax)
+
+    print("The Newton method converged to ", rNewton, " in ", nNewton, " iterations")
+    print("The g(x) Newton method converged to ", r2c, " in ", n2c, " iterations")
+    print("The m Newton method converged to ", rNewtonM, " in ", nNewtonM, " iterations")
+
+    #rint(rn2c)
+
+    [_,_,pNewton] = log_vectorizer(rnNewton,root)
+    [_,_,p2c] = log_vectorizer(rn2c,root)
+    [_,_,pNewtonM] = log_vectorizer(rnNewtonM,root)
+
+    print("The order of convergence for Newton was ", pNewton)
+    print("The order of convergence for g(x) was ", p2c)
+    print("The order of convergence for m Newton was ", pNewtonM)
 
 
 def Problem5():
@@ -283,7 +410,10 @@ def Problem5():
 
 #-------Calling Problem Functions-------#
 #Problem 1
-Problem1()
+#Problem1()
+
+#Problem 4
+#Problem4()
 
 #Problem 5
-#Problem5()
+Problem5()
