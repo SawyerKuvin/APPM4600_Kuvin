@@ -410,10 +410,10 @@ def Problem5():
 
 #-------Calling Problem Functions-------#
 #Problem 1
-#Problem1()
+Problem1()
 
 #Problem 4
-#Problem4()
+Problem4()
 
 #Problem 5
 Problem5()
