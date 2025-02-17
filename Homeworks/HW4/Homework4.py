@@ -299,7 +299,7 @@ def Problem1():
     plt.show()
 
     #Part b) Bisection Method
-    tol = 10**-13
+    tol = 10**(-13)
     a = 0
     b = xbar
     [biDepth,_,_] = bisection(T,a,b,tol)
