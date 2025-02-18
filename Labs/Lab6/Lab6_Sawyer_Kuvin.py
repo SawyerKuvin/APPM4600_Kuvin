@@ -1,7 +1,7 @@
 ##APPM 4600 - Lab 5 (In Lab Code Attempt)
 #Author: Sawyer Kuvin
 #Date: 2/18/25
-#Questions attempted/completed: 2.1, 2.2, ~3.1
+#Questions attempted/completed: 2.1, 2.2, 3.1, 3.2, ~3.3
 # (~ partially completed/attempted) 
 
 import numpy as np
