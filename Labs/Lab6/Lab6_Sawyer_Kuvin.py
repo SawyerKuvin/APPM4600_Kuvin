@@ -234,6 +234,6 @@ def Problem3():
 
 
 #-------Running Lab Questions-------#
-#BeforeLab()
+BeforeLab()
 
 Problem3()
