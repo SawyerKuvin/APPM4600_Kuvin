@@ -1,0 +1,77 @@
+##APPM 4600 - Lab 7 (In Lab Code Attempt)
+#Author: Sawyer Kuvin
+#Date: 2/25/25
+#Questions attempted/completed: 2
+# (~ partially completed/attempted) 
+
+#Importing Commonly Used Libraries
+import numpy as np
+from numpy import linalg as lg
+import matplotlib.pyplot as plt
+import scipy.special as sp
+from scipy.linalg import lu_factor, lu_solve
+
+
+#--------Reused/Calculation Functions-------#
+def  eval_lin_spline(xeval,Neval,a,b,f,Nint): #Given Function
+
+    '''create the intervals for piecewise approximations'''
+    xint = np.linspace(a,b,Nint+1)
+   
+    '''create vector to store the evaluation of the linear splines'''
+    yeval = np.zeros(Neval) 
+    
+    for jint in range(Nint):
+        '''find indices of xeval in interval (xint(jint),xint(jint+1))'''
+        '''let ind denote the indices in the intervals'''
+        '''let n denote the length of ind'''
+        
+        '''temporarily store your info for creating a line in the interval of 
+         interest'''
+        a1= xint(jint)
+        fa1 = f(a1)
+        b1 = xint(jint+1)
+        fb1 = f(b1)
+        
+        for kk in range(n):
+           '''use your line evaluator to evaluate the lines at each of the points 
+           in the interval'''
+           '''yeval(ind(kk)) = call your line evaluator at xeval(ind(kk)) with 
+           the points (a1,fa1) and (b1,fb1)'''
+
+def vandermonde(x_vec):
+    #x_vec - Vector of x values from original function
+    #N - length of y vector of values
+    N = len(x_vec)+1
+    V = np.zeros((N,N))
+    for i in range(N):
+        for j in range(N):
+            V[i,j] = x_vec(i)**j
+
+    return(V)
+
+def interp_coeffs(V,y_vec):
+    a = np.linalg.solve(V,y_vec)
+    return(a)
+
+def monomial_expansion(x_vec,y_vec,x_0=-7000):
+    V = vandermonde(x_vec,y_vec)
+    a = interp_coeffs(V,y_vec)
+
+    if x_0==-7000:
+        return(V,a)
+    else:
+        p_0 = 0
+        N = len(x_vec)+1
+        for k in range(N):
+            p_0 = p_0 + a[k]*(x_0**k)
+        return(p_0,V,a)
+    
+#-------Problem Functions--------#
+
+
+
+
+#-------Calling Problems-------#
+        
+
