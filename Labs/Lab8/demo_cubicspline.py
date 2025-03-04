@@ -51,26 +51,30 @@ def create_natural_spline(yint,xint,N):
     b = np.zeros(N+1)
 #  vector values
     h = np.zeros(N+1)
-    h[0] = xint[i]-xint[i-1]  
     for i in range(1,N):
-       h[i] = xint[i+1] - xint[i]
-       b[i] = (yint[i+1]-yint[i])/h[i] - (yint[i]-yint[i-1])/h[i-1]
+        hi = xint[i]-xint[i-1]
+        hip = xint[i+1] - xint[i]
+        b[i] = (yint[i+1]-yint[i])/hip - (yint[i]-yint[i-1])/hi
+        h[i-1] = hi
+        h[i] = hip
 
 #  create the matrix A so you can solve for the M values
     A = np.zeros((N+1,N+1))
-
-#  Invert A    
-    Ainv = 
-
-# solver for M    
-    M  = 
+    A[0][0] = 1.0
+for j in range(1,N):
+    A[j][j-1] = h[j-1]/6
+    A[j][j] = (h[j]+h[j-1])/3
+    A[j][j+1] = h[j]/6
+    A[N][N] = 1
+    Ainv = inv(A)
+    M = Ainv.dot(b)
     
 #  Create the linear coefficients
     C = np.zeros(N)
     D = np.zeros(N)
     for j in range(N):
-       C[j] = # find the C coefficients
-       D[j] = # find the D coefficients
+        C[j] = yint[j]/h[j]-h[j]*M[j]/6
+        D[j] = yint[j+1]/h[j]-h[j]*M[j+1]/6
     return(M,C,D)
        
 def eval_local_spline(xeval,xi,xip,Mi,Mip,C,D):
